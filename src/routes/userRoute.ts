@@ -1,4 +1,5 @@
-import { Router } from 'express';
+import express from 'express';
+import multer from 'multer'
 import {
   userAll,
   userAvatarUpdate,
@@ -8,9 +9,11 @@ import {
 } from '../controllers/userController';
 
 //
-//
 // марштуры пользаков
-const userRouter = Router();
+// прием данных как FormData
+const userRouter = express.Router();
+const formdata = multer();
+
 //
 //
 // получить всех
@@ -20,7 +23,8 @@ userRouter.get('/:userId', userById);
 //
 //
 // создать
-userRouter.post('/', userCreate);
+userRouter.post('/', formdata.none(), express.json(), userCreate);
+// userRouter.post('/', express.json(), userCreate);
 //
 //
 // обновить

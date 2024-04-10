@@ -21,6 +21,9 @@ export function userById(req: Request, res: Response, next: NextFunction) {
 export function userCreate(req: Request, res: Response, next: NextFunction) {
   // const { name, about } = req.body;
 
+  console.log('body', req.body);
+
+
   res.send(req.body);
 
   // User.create({ name, about })

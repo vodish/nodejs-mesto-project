@@ -26,7 +26,13 @@ mongoose.connect(MONGOO_CONNECT);
 //
 // сервер
 const server = express();
+//
+// боди-парсер
+// server.use(express.json())
+// server.use(express.urlencoded())
 
+//
+// маршруты
 server.use('/users', userRouter);
 // app.use('/cards', userRouter);
 
