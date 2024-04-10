@@ -19,16 +19,11 @@ export function userById(req: Request, res: Response, next: NextFunction) {
 //
 //
 export function userCreate(req: Request, res: Response, next: NextFunction) {
-  // const { name, about } = req.body;
+  const { name, about, avatar } = req.body;
 
-  console.log('body', req.body);
-
-
-  res.send(req.body);
-
-  // User.create({ name, about })
-  //   .then((user) => res.send(user))
-  //   .catch(next);
+  User.create({ name, about, avatar })
+    .then((user) => res.send(user))
+    .catch(next);
 }
 
 //

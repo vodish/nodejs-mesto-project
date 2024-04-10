@@ -29,8 +29,8 @@ userRouter.post('/', formdata.none(), express.json(), userCreate);
 //
 // обновить
 // обновить аватарку
-userRouter.patch('/me', userUpdate);
-userRouter.patch('/me/avatar', userAvatarUpdate);
+userRouter.patch('/me', express.json(), userUpdate);
+userRouter.patch('/me/avatar', express.json(), userAvatarUpdate);
 //
 //
 //
