@@ -2,7 +2,7 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 import express from 'express';
 import userRouter from './routes/userRoute';
-import { errorHandler } from './handlers/errorHandler';
+import errorHandler from './handlers/errorHandler';
 
 //
 // переменные окружения

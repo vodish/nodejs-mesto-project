@@ -1,4 +1,5 @@
-
+//
+//
 export interface ErrorObject extends Error {
   statusCode?: number
 }
@@ -21,4 +22,3 @@ export class Error404 extends Error implements ErrorObject {
     super(message);
   }
 }
-
