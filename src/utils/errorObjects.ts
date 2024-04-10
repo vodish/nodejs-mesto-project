@@ -1,34 +1,24 @@
-//
-//
-// интерфейсы
-export interface Error400 {
-  statusCode: number,
+
+export interface ErrorObject extends Error {
+  statusCode?: number
 }
 
-export interface Error404 extends Error {
-  statusCode: number,
-}
+//
+//
+//
+export class Error400 extends Error implements ErrorObject {
+  statusCode = 400;
 
-//export interface ErrorObject extends Error {
-//   statusCode: number,
-// }
-
-//
-//
-//
-//
-// ошибки
-export class Error400 extends Error {
   constructor(message: string) {
     super(message);
-    this.statusCode = 400;
   }
 }
 
-export class Error404 extends Error {
+export class Error404 extends Error implements ErrorObject {
+  statusCode = 404;
+
   constructor(message: string) {
     super(message);
-    this.statusCode = 404;
   }
 }
 
