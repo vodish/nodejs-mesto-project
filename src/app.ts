@@ -2,6 +2,7 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 import express from 'express';
 import userRouter from './routes/userRoute';
+import { errorHandler } from './handlers/errorHandler';
 
 //
 // переменные окружения
@@ -39,5 +40,6 @@ server.use('/users', userRouter);
 //
 //
 //
+server.use('/users', errorHandler);
 server.listen(+SERVER_PORT);
 console.log(`Server run at http://localhost:${SERVER_PORT}`);
