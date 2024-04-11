@@ -6,7 +6,7 @@ export type TCard = {
   name: string,
   link: string,
   owner: ObjectId,
-  likes: any,
+  likes: ObjectId[],
   createdAt: Date,
 };
 
@@ -30,7 +30,8 @@ const cardSchema = new mongoose.Schema<TCard>({
   },
   likes: [
     {
-
+      type: mongoose.Types.ObjectId,
+      ref: 'user',
     }
   ],
   createdAt: {
