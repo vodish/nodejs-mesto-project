@@ -1,42 +1,23 @@
 import express from 'express';
-import multer from 'multer';
 import {
-  userAll,
-  userAvatarUpdate,
-  userById,
-  userCreate,
-  userUpdate,
-} from '../controllers/userController';
+  сardDelete,
+  сardDislike,
+  сardInsert,
+  сardLike,
+  сardsAll,
+} from '../controllers/cardController';
 
 //
 //
 // марштуры карточек
 
 const cardRouter = express.Router();
-const formdata = multer();
 
-//
-//
-//
+cardRouter.get('/', сardsAll);
+cardRouter.post('/', сardInsert);
+cardRouter.delete('/:cardId', сardDelete);
+cardRouter.put('/:cardId/likes', сardLike);
+cardRouter.delete('/:cardId/likes', сardDislike);
 
-cardRouter.get('/', userAll);
-cardRouter.get('/:userId', userById);
-
-//
-//
-// создать
-
-cardRouter.post('/', formdata.none(), express.json(), userCreate);
-
-//
-// обновить
-// обновить аватарку
-
-cardRouter.patch('/me', express.json(), userUpdate);
-cardRouter.patch('/me/avatar', express.json(), userAvatarUpdate);
-
-//
-//
-//
 
 export default cardRouter;

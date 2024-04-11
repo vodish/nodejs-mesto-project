@@ -1,5 +1,4 @@
 //
-//
 
 export class ErrorObject extends Error {
   statusCode = 500;
@@ -10,7 +9,6 @@ export class ErrorObject extends Error {
   }
 }
 
-//
 //
 
 export function error400(message: string) {
