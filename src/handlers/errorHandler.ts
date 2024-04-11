@@ -1,13 +1,23 @@
-import { Request, Response } from 'express';
-import { ErrorObject } from '../utils/errorObjects';
+import { Request, Response, NextFunction } from 'express';
+import { Error } from 'mongoose';
+import { ErrorObject } from '../utils/errors';
 
 //
+type TErrorIncome = ErrorObject & Error.ValidationError;
 //
 //
-export default function errorHandler(err: ErrorObject, req: Request, res: Response) {
-  const { statusCode = 500, message } = err;
+function errorHandler(err: TErrorIncome, req: Request, res: Response, next: NextFunction) {
+  //
+  let { statusCode = 500, message = 'На сервере ошибка 500' } = err;
 
-  res.status(statusCode).send({
-    error: statusCode !== 500 ? message : `На сервере ошибка ${statusCode}`,
-  });
+  if (err.name === 'ValidationError') {
+    statusCode = 400;
+    message = err.message;
+  }
+
+  res.status(statusCode).send({ error: message });
+
+  next();
 }
+
+export default errorHandler;

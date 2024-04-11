@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/userModel';
-import { Error400 } from '../utils/errorObjects';
+import { error400 } from '../utils/errors';
 
 //
 //
@@ -22,9 +22,12 @@ export function userById(req: Request, res: Response, next: NextFunction) {
 export function userCreate(req: Request, res: Response, next: NextFunction) {
   const { name, about, avatar } = req.body;
 
+
   User.create({ name, about, avatar })
     .then((user) => {
-      throw new Error400('Переданы некорректные данные для создания пользователя');
+      if (!user) {
+        throw error400('Не получилось создать пользователя');
+      }
 
       res.send(user);
     })

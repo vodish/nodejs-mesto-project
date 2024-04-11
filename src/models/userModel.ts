@@ -19,13 +19,13 @@ const userSchema = new Schema<TUser>({
   },
   about: {
     type: String,
-    require: true,
+    required: true,
     minlength: 2,
     maxlength: 200,
   },
   avatar: {
     type: String,
-    require: true,
+    required: true,
   },
 });
 
