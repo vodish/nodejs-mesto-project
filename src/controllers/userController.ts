@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import User from '../models/userModel';
 import { error400, error404 } from '../utils/errors';
-import { send } from 'process';
 
 //
 //
@@ -58,7 +57,7 @@ export function userUpdate(req: Request, res: Response, next: NextFunction) {
   const { name, about } = req.body;
 
   // @ts-ignore для req.user._id
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => res.send(user))
     .catch(next);
 }
@@ -68,5 +67,10 @@ export function userUpdate(req: Request, res: Response, next: NextFunction) {
 // обновить аватарку пользователя
 
 export function userAvatarUpdate(req: Request, res: Response, next: NextFunction) {
-  res.send({ handle: 'userAvatarUpdate' });
+  const { avatar } = req.body;
+
+  // @ts-ignore для req.user._id
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
+    .then((user) => res.send(user))
+    .catch(next);
 }
