@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import User from '../models/userModel';
 import { error400, error404 } from '../utils/errors';
+import { RequestIncome } from 'middlewares/authTempMiddleware';
 
 //
 //
