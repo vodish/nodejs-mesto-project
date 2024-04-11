@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose';
 
 //
-//
 
 export type TUser = {
   name: string,
@@ -9,7 +8,6 @@ export type TUser = {
   avatar: string,
 };
 
-//
 //
 
 const userSchema = new Schema<TUser>({
@@ -31,7 +29,6 @@ const userSchema = new Schema<TUser>({
   },
 });
 
-//
 //
 
 export default model<TUser>('user', userSchema);

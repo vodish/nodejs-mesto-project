@@ -1,9 +1,11 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
 import express from 'express';
+// import multer from 'multer';
 import userRouter from './routes/userRoute';
 import errorMiddleware from './middlewares/errorMiddleware';
 import authTempMiddleware from './middlewares/authTempMiddleware';
+import cardRouter from './routes/cardRoute';
 //
 
 // переменные окружения
@@ -28,18 +30,17 @@ mongoose.connect(MONGOO_CONNECT);
 const server = express();
 //
 
-// боди-парсер
-// авторизация
+// предварительные обработчики
 server.use(express.json());
 // server.use(express.urlencoded())
-server.use(authTempMiddleware);
+// server.use(multer().none()); // const formdata = multer();
+server.use(authTempMiddleware); // авторизация
+//
 //
 
-// маршруты пользака
-// маршруты карточки
-server.use('/users', userRouter);
-// app.use('/cards', cardRouter);
-
+server.use('/users', userRouter); // маршруты пользователя
+server.use('/cards', cardRouter); // маршруты карточки
+//
 //
 
 // обработчик ошибок

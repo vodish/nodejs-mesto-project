@@ -1,5 +1,5 @@
 import express from 'express';
-// import multer from 'multer';
+
 import {
   userAll,
   userAvatarUpdate,
@@ -12,8 +12,6 @@ import {
 // маршруты пользователя
 
 const userRouter = express.Router();
-// const formdata = multer();
-// userRouter.post('/', formdata.none(), userCreate); // создать пользователя
 
 userRouter.get('/', userAll); // получить всех пользователей
 userRouter.get('/:userId', userById); // получить указанного по ид

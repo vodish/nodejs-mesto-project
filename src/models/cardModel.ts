@@ -1,16 +1,15 @@
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 
 //
 
 export type TCard = {
   name: string,
   link: string,
-  owner: any,
+  owner: ObjectId,
   likes: any,
-  createdAt: any,
+  createdAt: Date,
 };
 
-//
 //
 
 const cardSchema = new mongoose.Schema<TCard>({
@@ -40,7 +39,6 @@ const cardSchema = new mongoose.Schema<TCard>({
   },
 });
 
-//
 //
 
 export default mongoose.model<TCard>('card', cardSchema);
