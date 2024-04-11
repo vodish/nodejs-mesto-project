@@ -1,10 +1,10 @@
 import express from 'express';
 import {
-  сardDelete,
-  сardDislike,
-  сardInsert,
-  сardLike,
   сardsAll,
+  сardInsert,
+  сardDelete,
+  сardLike,
+  сardDislike,
 } from '../controllers/cardController';
 
 //
