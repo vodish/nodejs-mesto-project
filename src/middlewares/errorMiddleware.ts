@@ -12,7 +12,6 @@ function errorHandler(err: TErrorIncome, req: Request, res: Response, next: Next
 
   if (err.name === 'ValidationError') {
     statusCode = 400;
-    message = err.message;
   }
 
   res.status(statusCode).send({ error: message });

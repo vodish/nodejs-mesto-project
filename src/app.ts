@@ -2,7 +2,8 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 import express from 'express';
 import userRouter from './routes/userRoute';
-import errorHandler from './handlers/errorHandler';
+import errorMiddleware from './middlewares/errorMiddleware';
+import authTempMiddleware from './middlewares/authTempMiddleware';
 
 //
 // переменные окружения
@@ -20,26 +21,37 @@ if (!MONGOO_CONNECT) {
 //
 //
 // подключение к бд
+
 mongoose.set('strictQuery', false);
 mongoose.connect(MONGOO_CONNECT);
 
 //
 //
 // сервер
+
 const server = express();
+
 //
 // боди-парсер
-// server.use(express.json())
+server.use(express.json())
 // server.use(express.urlencoded())
 
 //
-// маршруты
-server.use('/users', userRouter);
-// app.use('/cards', userRouter);
+// авторизация
+
+server.use(authTempMiddleware);
 
 //
+// маршруты пользака
+// маршруты карточки
+
+server.use('/users', userRouter);
+// app.use('/cards', cardRouter);
+
 //
-//
-server.use('/users', errorHandler);
+// обработчик ошибок
+
+server.use(errorMiddleware);
 server.listen(+SERVER_PORT);
+
 console.log(`Server run at http://localhost:${SERVER_PORT}`);

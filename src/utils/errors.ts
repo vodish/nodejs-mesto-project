@@ -1,6 +1,6 @@
 //
 //
-//
+
 export class ErrorObject extends Error {
   statusCode = 500;
 
@@ -10,8 +10,6 @@ export class ErrorObject extends Error {
   }
 }
 
-//
-//
 //
 //
 

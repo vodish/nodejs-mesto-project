@@ -23,14 +23,14 @@ userRouter.get('/:userId', userById);
 //
 //
 // создать
-userRouter.post('/', formdata.none(), express.json(), userCreate);
+userRouter.post('/', formdata.none(), userCreate);
 // userRouter.post('/', express.json(), userCreate);
 //
 //
 // обновить
 // обновить аватарку
-userRouter.patch('/me', express.json(), userUpdate);
-userRouter.patch('/me/avatar', express.json(), userAvatarUpdate);
+userRouter.patch('/me', userUpdate);
+userRouter.patch('/me/avatar', userAvatarUpdate);
 //
 //
 //
