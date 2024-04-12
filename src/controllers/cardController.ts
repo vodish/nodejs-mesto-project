@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import mongoose, { ObjectId } from 'mongoose';
-import CardModel from '../models/cardModel'
+import { ObjectId } from 'mongoose';
+import CardModel from '../models/cardModel';
 import { error400, error404 } from '../utils/errors';
 
+//
 
 export function сardsAll(req: Request, res: Response, next: NextFunction) {
   CardModel
@@ -10,6 +11,8 @@ export function сardsAll(req: Request, res: Response, next: NextFunction) {
     .then((cards) => res.send(cards))
     .catch(next);
 }
+
+//
 
 export function сardInsert(req: Request, res: Response, next: NextFunction) {
   const { name, link } = req.body;
@@ -27,6 +30,8 @@ export function сardInsert(req: Request, res: Response, next: NextFunction) {
     .catch(next);
 }
 
+//
+
 export function сardDelete(req: Request, res: Response, next: NextFunction) {
   //
   CardModel
@@ -39,6 +44,8 @@ export function сardDelete(req: Request, res: Response, next: NextFunction) {
     })
     .catch(next);
 }
+
+//
 
 export function сardLike(req: Request, res: Response, next: NextFunction) {
   //
@@ -56,14 +63,14 @@ export function сardLike(req: Request, res: Response, next: NextFunction) {
     .catch(next);
 
   //
+  // likes: { $nin: [req.user._id] }
   CardModel
     .findOneAndUpdate(
       {
         _id: req.params.cardId,
-        //likes: { $nin: [req.user._id] }
       },
       { $push: { likes: req.user._id } },
-      { new: true }
+      { new: true },
     )
     .then((card) => {
       const card1 = JSON.parse(JSON.stringify(card));
@@ -72,13 +79,15 @@ export function сardLike(req: Request, res: Response, next: NextFunction) {
     .catch(next);
 }
 
+//
+
 export function сardDislike(req: Request, res: Response, next: NextFunction) {
   //
   CardModel
     .findByIdAndUpdate(
       req.params.cardId,
       { $pull: { likes: req.user._id } },
-      { new: true }
+      { new: true },
     )
     .then((card) => {
       if (!card) {

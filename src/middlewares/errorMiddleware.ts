@@ -3,12 +3,15 @@ import { Error } from 'mongoose';
 import { ErrorObject } from '../utils/errors';
 
 //
+
 type TErrorIncome = ErrorObject & Error.ValidationError;
+
 //
-//
+
 function errorHandler(err: TErrorIncome, req: Request, res: Response, next: NextFunction) {
   //
-  let { statusCode = 500, message = 'На сервере ошибка 500' } = err;
+  let statusCode = err.statusCode || 500;
+  const message = err.message || 'На сервере ошибка 500';
 
   if (err.name === 'ValidationError') {
     statusCode = 400;

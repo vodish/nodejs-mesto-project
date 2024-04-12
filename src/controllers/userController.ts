@@ -11,7 +11,7 @@ export function userAll(req: Request, res: Response, next: NextFunction) {
   //
   User
     .find()
-    .then(userAll => res.send(userAll))
+    .then((list) => res.send(list))
     .catch(next);
 }
 
@@ -65,7 +65,7 @@ export function userUpdate(req: Request, res: Response, next: NextFunction) {
     .findByIdAndUpdate(
       req.user._id,
       { name, about },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     )
     .then((user) => res.send(user))
     .catch(next);
@@ -83,7 +83,7 @@ export function userAvatarUpdate(req: Request, res: Response, next: NextFunction
     .findByIdAndUpdate(
       req.user._id,
       { avatar },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     )
     .then((user) => res.send(user))
     .catch(next);

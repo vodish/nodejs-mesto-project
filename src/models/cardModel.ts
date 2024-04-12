@@ -32,11 +32,11 @@ const cardSchema = new mongoose.Schema<TCard>({
     {
       type: mongoose.Types.ObjectId,
       ref: 'user',
-    }
+    },
   ],
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
 });
 

@@ -45,7 +45,9 @@ server.use('/cards', cardRouter); // маршруты карточки
 
 // обработчик ошибок
 server.use(errorMiddleware);
+
 //
 
 server.listen(+SERVER_PORT);
+
 console.log(`Сервер запущен http://localhost:${SERVER_PORT}`);
