@@ -43,14 +43,17 @@ export function сardDelete(req: Request, res: Response, next: NextFunction) {
 export function сardLike(req: Request, res: Response, next: NextFunction) {
   //
   CardModel
-    .findByIdAndUpdate(
-      req.params.cardId,
+    .findOneAndUpdate(
+      {
+        _id: req.params.cardId,
+        likes: { $nin: [req.user._id] }
+      },
       { $push: { likes: req.user._id } },
       { new: true }
     )
     .then((card) => {
       if (!card) {
-        throw error404('Не найдена карточка');
+        throw error404('Не найдена карточка или уже лайкнута');
       }
 
       const card1 = JSON.parse(JSON.stringify(card));
