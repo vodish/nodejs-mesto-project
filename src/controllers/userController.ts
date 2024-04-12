@@ -9,7 +9,8 @@ import { error400, error404 } from '../utils/errors';
 
 export function userAll(req: Request, res: Response, next: NextFunction) {
   //
-  User.find({})
+  User
+    .find()
     .then(userAll => res.send(userAll))
     .catch(next);
 }
@@ -20,7 +21,8 @@ export function userAll(req: Request, res: Response, next: NextFunction) {
 
 export function userById(req: Request, res: Response, next: NextFunction) {
   //
-  User.findById({ _id: new mongoose.Types.ObjectId(req.params.userId) })
+  User
+    .findById({ _id: new mongoose.Types.ObjectId(req.params.userId) })
     .then((user) => {
       if (!user) {
         throw error404('Пользователь не найден');
@@ -39,7 +41,8 @@ export function userCreate(req: Request, res: Response, next: NextFunction) {
   //
   const { name, about, avatar } = req.body;
 
-  User.create({ name, about, avatar })
+  User
+    .create({ name, about, avatar })
     .then((user) => {
       if (!user) {
         throw error400('Не получилось создать пользователя');
@@ -58,7 +61,12 @@ export function userUpdate(req: Request, res: Response, next: NextFunction) {
   //
   const { name, about } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
+  User
+    .findByIdAndUpdate(
+      req.user._id,
+      { name, about },
+      { new: true, runValidators: true }
+    )
     .then((user) => res.send(user))
     .catch(next);
 }
@@ -71,7 +79,12 @@ export function userAvatarUpdate(req: Request, res: Response, next: NextFunction
   //
   const { avatar } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
+  User
+    .findByIdAndUpdate(
+      req.user._id,
+      { avatar },
+      { new: true, runValidators: true }
+    )
     .then((user) => res.send(user))
     .catch(next);
 }

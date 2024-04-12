@@ -42,4 +42,6 @@ const cardSchema = new mongoose.Schema<TCard>({
 
 //
 
-export default mongoose.model<TCard>('card', cardSchema);
+const CardModel = mongoose.model<TCard>('card', cardSchema);
+
+export default CardModel;
