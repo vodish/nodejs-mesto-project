@@ -7,9 +7,9 @@ import {
   сardDislike,
 } from '../controllers/cardController';
 
-//
-// марштуры карточек
 
+
+// марштуры карточек
 const cardRouter = express.Router();
 
 cardRouter.get('/', сardsAll); // получить все карточки

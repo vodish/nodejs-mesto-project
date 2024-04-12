@@ -38,6 +38,7 @@
               "ts": "never"
           }
       ],
-      "no-underscore-dangle": "off"
+      "no-underscore-dangle": "off",
+      "no-multiple-empty-lines": ["error", { "max": 3 }]
   }
 }
