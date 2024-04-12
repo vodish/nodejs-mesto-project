@@ -43,19 +43,29 @@ export function сardDelete(req: Request, res: Response, next: NextFunction) {
 export function сardLike(req: Request, res: Response, next: NextFunction) {
   //
   CardModel
+    .findById(req.params.cardId)
+    .then((card) => {
+      if (!card) {
+        throw error404('Не найдена карточка');
+      }
+
+      if (card.likes.includes(req.user._id as ObjectId)) {
+        throw error404('Карточка уже лайкнута');
+      }
+    })
+    .catch(next);
+
+  //
+  CardModel
     .findOneAndUpdate(
       {
         _id: req.params.cardId,
-        likes: { $nin: [req.user._id] }
+        //likes: { $nin: [req.user._id] }
       },
       { $push: { likes: req.user._id } },
       { new: true }
     )
     .then((card) => {
-      if (!card) {
-        throw error404('Не найдена карточка или уже лайкнута');
-      }
-
       const card1 = JSON.parse(JSON.stringify(card));
       res.send({ ...card1, likes_cnt: card1.likes.length });
     })
