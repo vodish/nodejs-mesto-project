@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import CardModel from '../models/cardModel'
 import { error400, error404 } from '../utils/errors';
 
@@ -41,9 +41,39 @@ export function сardDelete(req: Request, res: Response, next: NextFunction) {
 }
 
 export function сardLike(req: Request, res: Response, next: NextFunction) {
-  res.send({ handle: 'сardLike' });
+  //
+  CardModel
+    .findByIdAndUpdate(
+      req.params.cardId,
+      { $push: { likes: req.user._id } },
+      { new: true }
+    )
+    .then((card) => {
+      if (!card) {
+        throw error404('Не найдена карточка');
+      }
+
+      const card1 = JSON.parse(JSON.stringify(card));
+      res.send({ ...card1, likes_cnt: card1.likes.length });
+    })
+    .catch(next);
 }
 
 export function сardDislike(req: Request, res: Response, next: NextFunction) {
-  res.send({ handle: 'сardDislike' });
+  //
+  CardModel
+    .findByIdAndUpdate(
+      req.params.cardId,
+      { $pull: { likes: req.user._id } },
+      { new: true }
+    )
+    .then((card) => {
+      if (!card) {
+        throw error404('Не найдена карточка');
+      }
+
+      const card1 = JSON.parse(JSON.stringify(card));
+      res.send({ ...card1, likes_cnt: card1.likes.length });
+    })
+    .catch(next);
 }
