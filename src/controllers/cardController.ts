@@ -57,7 +57,7 @@ export function сardLike(req: Request, res: Response, next: NextFunction) {
       }
 
       if (card.likes.includes(req.user._id as ObjectId)) {
-        throw error404('Карточка уже лайкнута');
+        throw error400('Карточка уже лайкнута');
       }
     })
     .catch(next);
