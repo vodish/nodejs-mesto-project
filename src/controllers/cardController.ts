@@ -35,10 +35,13 @@ export function сardInsert(req: Request, res: Response, next: NextFunction) {
 export function сardDelete(req: Request, res: Response, next: NextFunction) {
   //
   CardModel
-    .findByIdAndRemove(req.params.cardId)
+    .findOneAndRemove({
+      _id: req.params.cardId,
+      owner: req.user._id
+    })
     .then((data) => {
       if (!data) {
-        throw error404('Не нейдена карточка');
+        throw error404('Карточка не нейдена');
       }
       res.send({ operation: 'Карточка удалена' });
     })
