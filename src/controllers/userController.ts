@@ -65,8 +65,6 @@ export function userLogin(req: Request, res: Response, next: NextFunction) {
 // получить всех пользователей
 export function userAll(req: Request, res: Response, next: NextFunction) {
 
-  console.log(req.user);
-
   User
     .find()
     .then((list) => res.send(list))
