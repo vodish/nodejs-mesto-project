@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import User from '../models/userModel';
-import { error400, error404 } from '../utils/errors';
+import { error400, error401, error404 } from '../utils/errors';
 
+const SALT_KEY = process.env.SALT_KEY || '';
 
 
 // создать пользователя
@@ -33,6 +35,7 @@ export async function userCreate(req: Request, res: Response, next: NextFunction
 // login пользователя
 export function userLogin(req: Request, res: Response, next: NextFunction) {
   const { email, password } = req.body;
+  let tokenObject: { _id: string };
 
   User
     .findOne({ email })
@@ -41,14 +44,17 @@ export function userLogin(req: Request, res: Response, next: NextFunction) {
         throw error404(`Пользователь c емейлом '${email}' не найден`);
       }
 
+      tokenObject = { _id: user._id.toString() };
+
       return bcrypt.compare(password, user.password);
     })
     .then((matched) => {
       if (!matched) {
-        throw error400('Пароль плохой');
+        throw error401('Пароль плохой');
       }
 
-      res.send({ message: 'signin=ok' });
+      const token = jwt.sign(tokenObject, SALT_KEY, { expiresIn: '7d' });
+      res.send({ token });
     })
     .catch(next);
 }
