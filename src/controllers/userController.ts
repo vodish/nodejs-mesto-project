@@ -10,7 +10,6 @@ const SALT_KEY = process.env.SALT_KEY || '';
 
 // создать пользователя
 export async function userCreate(req: Request, res: Response, next: NextFunction) {
-  //
   const dataUser = {
     email: req.body.email,
     password: req.body.password,
@@ -50,10 +49,12 @@ export function userLogin(req: Request, res: Response, next: NextFunction) {
     })
     .then((matched) => {
       if (!matched) {
-        throw error401('Пароль плохой');
+        throw error401('Пароль не подходит');
       }
 
       const token = jwt.sign(tokenObject, SALT_KEY, { expiresIn: '7d' });
+
+      res.cookie('user_token', token, { httpOnly: true });
       res.send({ token });
     })
     .catch(next);
@@ -63,7 +64,9 @@ export function userLogin(req: Request, res: Response, next: NextFunction) {
 
 // получить всех пользователей
 export function userAll(req: Request, res: Response, next: NextFunction) {
-  //
+
+  console.log(req.user);
+
   User
     .find()
     .then((list) => res.send(list))

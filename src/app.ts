@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
 import express from 'express';
+import cookieParser from 'cookie-parser';
 // import multer from 'multer';
 import userRouter from './routes/userRoute';
 import errorMiddleware from './middlewares/errorMiddleware';
@@ -30,6 +31,7 @@ mongoose.connect(MONGOO_CONNECT);
 const server = express();
 
 // предварительные обработчики
+server.use(cookieParser());
 server.use(express.json());
 // server.use(express.urlencoded())
 // server.use(multer().none()); // const formdata = multer();
