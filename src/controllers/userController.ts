@@ -38,6 +38,7 @@ export function userLogin(req: Request, res: Response, next: NextFunction) {
 
   User
     .findOne({ email })
+    .select('+password')
     .then((user) => {
       if (!user) {
         throw error404(`Пользователь c емейлом '${email}' не найден`);

@@ -24,6 +24,7 @@ const userSchema = new Schema<TUser>({
     type: String,
     required: true,
     minlength: 3,
+    select: false, // не возвращать хеш пароля из базы
   },
   name: {
     type: String,
