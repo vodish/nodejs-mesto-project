@@ -1,12 +1,61 @@
 import { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 import User from '../models/userModel';
 import { error400, error404 } from '../utils/errors';
 
-//
+
+
+// создать пользователя
+export async function userCreate(req: Request, res: Response, next: NextFunction) {
+  //
+  const dataUser = {
+    email: req.body.email,
+    password: req.body.password,
+    name: req.body.name,
+    about: req.body.about,
+    avatar: req.body.avatar
+  };
+
+  bcrypt.hash(dataUser.password, 10)
+    .then((hash) => User.create({ ...dataUser, password: hash }))
+    .then((user) => {
+      if (!user) {
+        throw error400('Не получилось создать пользователя');
+      }
+      res.send(user);
+    })
+    .catch(next);
+}
+
+
+
+// login пользователя
+export function userLogin(req: Request, res: Response, next: NextFunction) {
+  const { email, password } = req.body;
+
+  User
+    .findOne({ email })
+    .then((user) => {
+      if (!user) {
+        throw error404(`Пользователь c емейлом '${email}' не найден`);
+      }
+
+      return bcrypt.compare(password, user.password);
+    })
+    .then((matched) => {
+      if (!matched) {
+        throw error400('Пароль плохой');
+      }
+
+      res.send({ message: 'signin=ok' });
+    })
+    .catch(next);
+}
+
+
 
 // получить всех пользователей
-
 export function userAll(req: Request, res: Response, next: NextFunction) {
   //
   User
@@ -15,10 +64,9 @@ export function userAll(req: Request, res: Response, next: NextFunction) {
     .catch(next);
 }
 
-//
+
 
 // получить пользователя по id
-
 export function userById(req: Request, res: Response, next: NextFunction) {
   //
   User
@@ -33,30 +81,9 @@ export function userById(req: Request, res: Response, next: NextFunction) {
     .catch(next);
 }
 
-//
 
-// создать пользователя
-
-export function userCreate(req: Request, res: Response, next: NextFunction) {
-  //
-  const { name, about, avatar } = req.body;
-
-  User
-    .create({ name, about, avatar })
-    .then((user) => {
-      if (!user) {
-        throw error400('Не получилось создать пользователя');
-      }
-
-      res.send(user);
-    })
-    .catch(next);
-}
-
-//
 
 // обновить пользователя
-
 export function userUpdate(req: Request, res: Response, next: NextFunction) {
   //
   const { name, about } = req.body;
@@ -71,10 +98,8 @@ export function userUpdate(req: Request, res: Response, next: NextFunction) {
     .catch(next);
 }
 
-//
 
 // обновить аватарку пользователя
-
 export function userAvatarUpdate(req: Request, res: Response, next: NextFunction) {
   //
   const { avatar } = req.body;

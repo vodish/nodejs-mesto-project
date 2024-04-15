@@ -6,6 +6,7 @@ import userRouter from './routes/userRoute';
 import errorMiddleware from './middlewares/errorMiddleware';
 import authTempMiddleware from './middlewares/authTempMiddleware';
 import cardRouter from './routes/cardRoute';
+import { userCreate, userLogin } from './controllers/userController';
 
 
 // переменные окружения
@@ -36,6 +37,8 @@ server.use(authTempMiddleware); // авторизация
 
 
 // маршруты
+server.post('/signin', userLogin); // вход пользователя
+server.post('/signup', userCreate); // регистрация пользователя
 server.use('/users', userRouter);
 server.use('/cards', cardRouter);
 
@@ -46,4 +49,5 @@ server.use(errorMiddleware);
 
 // запуск
 server.listen(+SERVER_PORT);
+
 console.log(`Сервер запущен http://localhost:${SERVER_PORT}`);

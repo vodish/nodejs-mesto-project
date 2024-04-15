@@ -2,18 +2,16 @@ import { Request, Response, NextFunction } from 'express';
 import { Error } from 'mongoose';
 import { ErrorObject } from '../utils/errors';
 
-//
 
 type TErrorIncome = ErrorObject & Error.ValidationError;
 
-//
 
 function errorHandler(err: TErrorIncome, req: Request, res: Response, next: NextFunction) {
   //
   let statusCode = err.statusCode || 500;
   const message = err.message || 'На сервере ошибка 500';
 
-  if (err.name === 'ValidationError') {
+  if (['ValidationError', 'MongoServerError'].includes(err.name)) {
     statusCode = 400;
   }
 

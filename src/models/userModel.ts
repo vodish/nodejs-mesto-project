@@ -1,34 +1,49 @@
 import { Schema, model } from 'mongoose';
+import isEmail from 'validator/lib/isEmail';
 
-//
 
 export type TUser = {
+  email: string,
+  password: string,
   name: string,
   about: string,
   avatar: string,
 };
 
-//
-
 const userSchema = new Schema<TUser>({
-  name: {
+  email: {
     type: String,
     required: true,
+    unique: true,
+    validate: {
+      validator: (v: string) => isEmail(v),
+      message: props => `${props.value} is not a valid`
+    },
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 3,
+  },
+  name: {
+    type: String,
     minlength: 2,
     maxlength: 30,
+    default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
-    required: true,
     minlength: 2,
     maxlength: 200,
+    default: 'Исследователь',
   },
   avatar: {
     type: String,
-    required: true,
+    default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
   },
 });
 
-//
 
-export default model<TUser>('user', userSchema);
+const User = model<TUser>('user', userSchema);
+
+export default User;
