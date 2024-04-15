@@ -75,11 +75,30 @@ export function userAll(req: Request, res: Response, next: NextFunction) {
 
 
 
+// получить авторизованного пользователя
+export function userMe(req: Request, res: Response, next: NextFunction) {
+  if (!req.user) {
+    throw error404('Пользователь не авторизован');
+  }
+
+  User
+    .findById(req.user._id)
+    .then((user) => {
+      if (!user) {
+        throw error404('Пользователь не найден');
+      }
+
+      res.send(user);
+    })
+    .catch(next);
+}
+
+
 // получить пользователя по id
 export function userById(req: Request, res: Response, next: NextFunction) {
   //
   User
-    .findById({ _id: new mongoose.Types.ObjectId(req.params.userId) })
+    .findById(req.params.userId)
     .then((user) => {
       if (!user) {
         throw error404('Пользователь не найден');
