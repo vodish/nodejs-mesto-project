@@ -38,10 +38,8 @@ export function userLogin(req: Request, res: Response, next: NextFunction) {
   User
     .findOne({ email })
     .select('+password')
+    .orFail(error404(`Пользователь c емейлом '${email}' не найден`))
     .then((user) => {
-      if (!user) {
-        throw error404(`Пользователь c емейлом '${email}' не найден`);
-      }
 
       tokenObject = { _id: user._id.toString() };
 
@@ -81,13 +79,8 @@ export function userMe(req: Request, res: Response, next: NextFunction) {
 
   User
     .findById(req.user._id)
-    .then((user) => {
-      if (!user) {
-        throw error404('Пользователь не найден');
-      }
-
-      res.send(user);
-    })
+    .orFail(error404('Пользователь не найден'))
+    .then((user) => res.send(user))
     .catch(next);
 }
 
@@ -97,13 +90,8 @@ export function userById(req: Request, res: Response, next: NextFunction) {
   //
   User
     .findById(req.params.userId)
-    .then((user) => {
-      if (!user) {
-        throw error404('Пользователь не найден');
-      }
-
-      res.send(user);
-    })
+    .orFail(error404('Пользователь не найден.'))
+    .then((user) => res.send(user))
     .catch(next);
 }
 

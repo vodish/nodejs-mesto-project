@@ -11,10 +11,6 @@ function errorHandler(err: TErrorIncome, req: Request, res: Response, next: Next
   let statusCode = err.statusCode || 500;
   const message = err.message || 'На сервере ошибка 500';
 
-  if (['ValidationError', 'MongoServerError', 'Error'].includes(err.name)) {
-    statusCode = 400;
-  }
-
   if (err.code === 11000) { // дубликат пользователя
     statusCode = 409;
   }

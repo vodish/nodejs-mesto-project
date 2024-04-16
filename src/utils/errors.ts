@@ -4,30 +4,22 @@ export class ErrorObject extends Error {
 
   code: number | undefined = undefined;
 
-  constructor(message: string) {
+  constructor(message: string, statusCode: number) {
     super();
     this.message = message;
+    this.statusCode = statusCode;
   }
 }
 
 
 export function error400(message: string) {
-  const err = new ErrorObject(message);
-  err.statusCode = 400;
-
-  return err;
+  return new ErrorObject(message, 400);
 }
 
 export function error401(message: string) {
-  const err = new ErrorObject(message);
-  err.statusCode = 400;
-
-  return err;
+  return new ErrorObject(message, 401);
 }
 
 export function error404(message: string) {
-  const err = new ErrorObject(message);
-  err.statusCode = 404;
-
-  return err;
+  return new ErrorObject(message, 404);
 }
