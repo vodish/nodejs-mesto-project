@@ -9,7 +9,9 @@ import authTempMiddleware from './middlewares/authTempMiddleware';
 import cardRouter from './routes/cardRoute';
 import { userCreate, userLogin } from './controllers/userController';
 import { requestLogger, errorLogger } from './middlewares/loggerMiddleware';
-import lostController from './controllers/lostController';
+import { error404 } from './utils/errors';
+
+
 
 // переменные окружения
 const {
@@ -23,9 +25,11 @@ if (!MONGOO_CONNECT) {
 }
 
 
+
 // подключение к бд
 mongoose.set('strictQuery', false);
 mongoose.connect(MONGOO_CONNECT);
+
 
 
 // сервер
@@ -49,7 +53,7 @@ server.use('/cards', cardRouter);
 
 
 // обработчик ошибок
-server.use(lostController);
+server.use(() => { throw error404('Страница не найдена...') });
 server.use(errorLogger);
 server.use(errorMiddleware);
 
