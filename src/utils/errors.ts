@@ -1,6 +1,8 @@
+import { constants } from 'http2';
+
 
 export class ErrorObject extends Error {
-  statusCode = 500;
+  statusCode = constants.HTTP_STATUS_INTERNAL_SERVER_ERROR;
 
   code: number | undefined = undefined;
 
@@ -13,13 +15,13 @@ export class ErrorObject extends Error {
 
 
 export function error400(message: string) {
-  return new ErrorObject(message, 400);
+  return new ErrorObject(message, constants.HTTP_STATUS_BAD_REQUEST);
 }
 
 export function error401(message: string) {
-  return new ErrorObject(message, 401);
+  return new ErrorObject(message, constants.HTTP_STATUS_UNAUTHORIZED);
 }
 
 export function error404(message: string) {
-  return new ErrorObject(message, 404);
+  return new ErrorObject(message, constants.HTTP_STATUS_NOT_FOUND);
 }

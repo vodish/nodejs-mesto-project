@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { ObjectId } from 'mongoose';
 import CardModel from '../models/cardModel';
 import { error400, error404 } from '../utils/errors';
+import { constants } from 'http2';
 
 
 // получить все карточки
@@ -20,7 +20,7 @@ export function сardInsert(req: Request, res: Response, next: NextFunction) {
 
   CardModel
     .create({ name, link, owner })
-    .then((card) => res.status(201).send(card))
+    .then((card) => res.status(constants.HTTP_STATUS_CREATED).send(card))
     .catch(next);
 }
 
