@@ -53,7 +53,7 @@ server.use('/cards', cardRouter);
 
 
 // обработчик ошибок
-server.use(() => { throw error404('Страница не найдена...') });
+server.use(() => { throw error404('Страница не найдена...'); });
 server.use(errorLogger);
 server.use(errorMiddleware);
 

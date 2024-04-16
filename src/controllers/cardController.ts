@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
+import { constants } from 'http2';
 import CardModel from '../models/cardModel';
 import { error400, error404 } from '../utils/errors';
-import { constants } from 'http2';
 
 
 // получить все карточки
@@ -61,7 +61,7 @@ export function сardLike(req: Request, res: Response, next: NextFunction) {
     .findOneAndUpdate(
       {
         _id: req.params.cardId,
-        likes: { $nin: [req.user._id] }
+        likes: { $nin: [req.user._id] },
       },
       { $push: { likes: req.user._id } },
       { new: true },

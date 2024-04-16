@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
+import { constants } from 'http2';
 import { Error } from 'mongoose';
 import { ErrorObject } from '../utils/errors';
-import { constants } from 'http2';
 
 type TErrorIncome = ErrorObject & Error;
 

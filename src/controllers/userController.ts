@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/userModel';
-import { error400, error401, error404 } from '../utils/errors';
+import { error401, error404 } from '../utils/errors';
 
 const SALT_KEY = process.env.SALT_KEY || '';
 
