@@ -30,12 +30,10 @@ const cardSchema = new mongoose.Schema<TCard>({
     ref: 'user',
     required: true,
   },
-  likes: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: 'user',
-    },
-  ],
+  likes: {
+    type: [{ type: mongoose.Types.ObjectId, ref: 'user' }],
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now,

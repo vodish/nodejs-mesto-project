@@ -19,12 +19,7 @@ export async function userCreate(req: Request, res: Response, next: NextFunction
 
   bcrypt.hash(dataUser.password, 10)
     .then((hash) => User.create({ ...dataUser, password: hash }))
-    .then((user) => {
-      if (!user) {
-        throw error400('Не получилось создать пользователя');
-      }
-      res.status(201).send(user);
-    })
+    .then((user) => res.status(201).send(user))
     .catch(next);
 }
 
@@ -72,10 +67,7 @@ export function userAll(req: Request, res: Response, next: NextFunction) {
 
 // получить авторизованного пользователя
 export function userMe(req: Request, res: Response, next: NextFunction) {
-  if (!req.user) {
-    throw error404('Пользователь не авторизован');
-  }
-
+  //
   User
     .findById(req.user._id)
     .orFail(error404('Пользователь не найден'))

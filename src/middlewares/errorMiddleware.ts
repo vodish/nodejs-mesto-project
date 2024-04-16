@@ -17,7 +17,6 @@ function errorHandler(err: TErrorIncome, req: Request, res: Response, next: Next
 
 
   res.status(statusCode).send({ error: message });
-
   next();
 }
 

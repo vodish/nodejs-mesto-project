@@ -3,8 +3,8 @@ import { ObjectId } from 'mongoose';
 import CardModel from '../models/cardModel';
 import { error400, error404 } from '../utils/errors';
 
-//
 
+// получить все карточки
 export function сardsAll(req: Request, res: Response, next: NextFunction) {
   CardModel
     .find()
@@ -12,26 +12,20 @@ export function сardsAll(req: Request, res: Response, next: NextFunction) {
     .catch(next);
 }
 
-//
 
+// добавить карточку
 export function сardInsert(req: Request, res: Response, next: NextFunction) {
   const { name, link } = req.body;
   const owner = req.user._id;
 
   CardModel
     .create({ name, link, owner })
-    .then((card) => {
-      if (!card) {
-        throw error400('Не получилось создать карточку');
-      }
-
-      res.send(card);
-    })
+    .then((card) => res.status(201).send(card))
     .catch(next);
 }
 
-//
 
+// удалить карточку
 export function сardDelete(req: Request, res: Response, next: NextFunction) {
   //
   CardModel
@@ -49,32 +43,30 @@ export function сardDelete(req: Request, res: Response, next: NextFunction) {
 }
 
 
-
+// лайк
 export function сardLike(req: Request, res: Response, next: NextFunction) {
   //
-  CardModel
-    .findById(req.params.cardId)
-    .then((card) => {
-      if (!card) {
-        throw error404('Не найдена карточка');
-      }
-
-      if (card.likes.includes(req.user._id as ObjectId)) {
-        throw error400('Карточка уже лайкнута');
-      }
-    })
-    .catch(next);
+  // CardModel
+  //   .findById(req.params.cardId)
+  //   .orFail(error404('Не найдена карточка'))
+  //   .then((card) => {
+  //     if (card.likes.includes(req.user._id as ObjectId)) {
+  //       throw error400('Карточка уже лайкнута');
+  //     }
+  //   })
+  //   .catch(next);
 
   //
-  // likes: { $nin: [req.user._id] }
   CardModel
     .findOneAndUpdate(
       {
         _id: req.params.cardId,
+        likes: { $nin: [req.user._id] }
       },
       { $push: { likes: req.user._id } },
       { new: true },
     )
+    .orFail(error400('Карточка не найдена или уже лайкнута'))
     .then((card) => {
       const card1 = JSON.parse(JSON.stringify(card));
       res.send({ ...card1, likes_cnt: card1.likes.length });
@@ -82,8 +74,8 @@ export function сardLike(req: Request, res: Response, next: NextFunction) {
     .catch(next);
 }
 
-//
 
+// дизлайк
 export function сardDislike(req: Request, res: Response, next: NextFunction) {
   //
   CardModel
