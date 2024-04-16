@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 import { error401 } from '../utils/errors';
 
 const SALT_KEY = process.env.SALT_KEY || '';
@@ -27,7 +27,7 @@ function authTempMiddleware(req: Request, res: Response, next: NextFunction) {
     throw error401('Необходима авторизация');
   }
 
-  next();
+  return next();
 }
 
 export default authTempMiddleware;

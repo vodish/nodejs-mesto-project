@@ -17,7 +17,7 @@ const userSchema = new Schema<TUser>({
     unique: true,
     validate: {
       validator: (v: string) => isEmail(v),
-      message: props => `${props.value} is not a valid`
+      message: (props) => `${props.value} is not a valid`,
     },
   },
   password: {

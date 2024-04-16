@@ -9,6 +9,8 @@ node_modules
 # Optional npm cache directory
 .npm
 .env
+log.request.log
+log.error.log
 
 # Optional REPL history
 .DS_Store

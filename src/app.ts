@@ -8,7 +8,7 @@ import errorMiddleware from './middlewares/errorMiddleware';
 import authTempMiddleware from './middlewares/authTempMiddleware';
 import cardRouter from './routes/cardRoute';
 import { userCreate, userLogin } from './controllers/userController';
-
+import { requestLogger, errorLogger } from './middlewares/loggerMiddleware';
 
 // переменные окружения
 const {
@@ -18,7 +18,7 @@ const {
 
 
 if (!MONGOO_CONNECT) {
-  throw new Error('Переменная окружения не найдена: .env/MONGOO_CONNECT');
+  throw new Error('Переменная окружения не найдена: /.env/MONGOO_CONNECT');
 }
 
 
@@ -31,6 +31,7 @@ mongoose.connect(MONGOO_CONNECT);
 const server = express();
 
 // предварительные обработчики
+server.use(requestLogger);
 server.use(cookieParser());
 server.use(express.json());
 // server.use(express.urlencoded())
@@ -47,6 +48,7 @@ server.use('/cards', cardRouter);
 
 
 // обработчик ошибок
+server.use(errorLogger);
 server.use(errorMiddleware);
 
 // запуск

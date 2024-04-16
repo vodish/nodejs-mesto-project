@@ -37,7 +37,7 @@ export function сardDelete(req: Request, res: Response, next: NextFunction) {
   CardModel
     .findOneAndRemove({
       _id: req.params.cardId,
-      owner: req.user._id
+      owner: req.user._id,
     })
     .then((data) => {
       if (!data) {

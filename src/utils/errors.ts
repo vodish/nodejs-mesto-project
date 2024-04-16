@@ -2,6 +2,8 @@
 export class ErrorObject extends Error {
   statusCode = 500;
 
+  code: number | undefined = undefined;
+
   constructor(message: string) {
     super();
     this.message = message;

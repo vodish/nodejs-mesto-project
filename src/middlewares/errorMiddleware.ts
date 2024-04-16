@@ -15,6 +15,10 @@ function errorHandler(err: TErrorIncome, req: Request, res: Response, next: Next
     statusCode = 400;
   }
 
+  if (err.code === 11000) { // дубликат пользователя
+    statusCode = 409;
+  }
+
 
   res.status(statusCode).send({ error: message });
 

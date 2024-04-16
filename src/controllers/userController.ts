@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/userModel';
@@ -15,7 +14,7 @@ export async function userCreate(req: Request, res: Response, next: NextFunction
     password: req.body.password,
     name: req.body.name,
     about: req.body.about,
-    avatar: req.body.avatar
+    avatar: req.body.avatar,
   };
 
   bcrypt.hash(dataUser.password, 10)
@@ -65,7 +64,7 @@ export function userLogin(req: Request, res: Response, next: NextFunction) {
 
 // получить всех пользователей
 export function userAll(req: Request, res: Response, next: NextFunction) {
-
+  //
   User
     .find()
     .then((list) => res.send(list))
