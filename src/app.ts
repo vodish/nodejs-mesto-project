@@ -9,6 +9,7 @@ import authTempMiddleware from './middlewares/authTempMiddleware';
 import cardRouter from './routes/cardRoute';
 import { userCreate, userLogin } from './controllers/userController';
 import { requestLogger, errorLogger } from './middlewares/loggerMiddleware';
+import lostController from './controllers/lostController';
 
 // переменные окружения
 const {
@@ -48,6 +49,7 @@ server.use('/cards', cardRouter);
 
 
 // обработчик ошибок
+server.use(lostController);
 server.use(errorLogger);
 server.use(errorMiddleware);
 

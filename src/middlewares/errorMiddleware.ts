@@ -15,6 +15,8 @@ function errorHandler(err: TErrorIncome, req: Request, res: Response, next: Next
     statusCode = 409;
   }
 
+  // console.log(err);
+
 
   res.status(statusCode).send({ error: message });
   next();
