@@ -40,7 +40,6 @@ export function userLogin(req: Request, res: Response, next: NextFunction) {
     .select('+password')
     .orFail(error404(`Пользователь c емейлом '${email}' не найден`))
     .then((user) => {
-
       tokenObject = { _id: user._id.toString() };
 
       return bcrypt.compare(password, user.password);
