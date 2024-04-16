@@ -3,16 +3,22 @@ import { Error } from 'mongoose';
 import { ErrorObject } from '../utils/errors';
 import { constants } from 'http2';
 
-type TErrorIncome = ErrorObject & Error.ValidationError;
+type TErrorIncome = ErrorObject & Error;
 
 
 function errorHandler(err: TErrorIncome, req: Request, res: Response, next: NextFunction) {
   //
   let statusCode = err.statusCode || constants.HTTP_STATUS_INTERNAL_SERVER_ERROR; // 500
-  const message = err.message || 'На сервере ошибка 500';
+  let message = err.message || 'На сервере ошибка 500';
 
   if (err.code === 11000) { // дубликат пользователя
     statusCode = constants.HTTP_STATUS_CONFLICT; // 409
+    // console.log(err);
+  }
+
+  if (err instanceof Error.CastError) { // ошибка типа данных
+    statusCode = constants.HTTP_STATUS_BAD_REQUEST; // 400
+    message = err.reason ? err.reason.message : 'HTTP_STATUS_BAD_REQUEST';
   }
 
 
