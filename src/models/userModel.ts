@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import isEmail from 'validator/lib/isEmail';
+import isURL from 'validator/lib/isURL';
 
 
 export type TUser = {
@@ -41,6 +42,10 @@ const userSchema = new Schema<TUser>({
   avatar: {
     type: String,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+    validate: {
+      validator: (v: string) => isURL(v),
+      message: (props) => `${props.value} is not a valid`,
+    },
   },
 });
 

@@ -1,6 +1,6 @@
 import mongoose, { ObjectId } from 'mongoose';
+import isURL from 'validator/lib/isURL';
 
-//
 
 export type TCard = {
   name: string,
@@ -9,8 +9,6 @@ export type TCard = {
   likes: ObjectId[],
   createdAt: Date,
 };
-
-//
 
 const cardSchema = new mongoose.Schema<TCard>({
   name: {
@@ -22,6 +20,10 @@ const cardSchema = new mongoose.Schema<TCard>({
   link: {
     type: String,
     required: true,
+    validate: {
+      validator: (v: string) => isURL(v),
+      message: '\'{VALUE}\' is not a valid',
+    },
   },
   owner: {
     type: mongoose.Types.ObjectId,
