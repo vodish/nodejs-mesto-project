@@ -23,7 +23,7 @@ export async function userCreate(req: Request, res: Response, next: NextFunction
       if (!user) {
         throw error400('Не получилось создать пользователя');
       }
-      res.send(user);
+      res.status(201).send(user);
     })
     .catch(next);
 }
