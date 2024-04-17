@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
+import { constants } from 'http2';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/userModel';
 import { error401, error404 } from '../utils/errors';
+
 
 const SALT_KEY = process.env.SALT_KEY || '';
 
@@ -19,7 +21,7 @@ export async function userCreate(req: Request, res: Response, next: NextFunction
 
   bcrypt.hash(dataUser.password, 10)
     .then((hash) => User.create({ ...dataUser, password: hash }))
-    .then((user) => res.status(201).send(user))
+    .then((user) => res.status(constants.HTTP_STATUS_CREATED).send(user))
     .catch(next);
 }
 
