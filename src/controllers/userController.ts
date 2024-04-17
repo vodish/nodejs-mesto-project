@@ -19,7 +19,8 @@ export async function userCreate(req: Request, res: Response, next: NextFunction
     avatar: req.body.avatar,
   };
 
-  bcrypt.hash(dataUser.password, 10)
+  bcrypt
+    .hash(dataUser.password, 10)
     .then((hash) => User.create({ ...dataUser, password: hash }))
     .then((user) => res.status(constants.HTTP_STATUS_CREATED).send(user))
     .catch(next);
