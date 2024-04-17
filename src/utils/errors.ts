@@ -7,8 +7,7 @@ export class ErrorObject extends Error {
   code: number | undefined = undefined;
 
   constructor(message: string, statusCode: number) {
-    super();
-    this.message = message;
+    super(message);
     this.statusCode = statusCode;
   }
 }

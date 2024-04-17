@@ -9,7 +9,7 @@ type TErrorIncome = ErrorObject & Error;
 function errorHandler(err: TErrorIncome, req: Request, res: Response, next: NextFunction) {
   //
   let statusCode = err.statusCode || constants.HTTP_STATUS_INTERNAL_SERVER_ERROR; // 500
-  let message = err.message || 'На сервере ошибка 500';
+  let message = err.message || 'На сервере ошибка';
 
   if (err.code === 11000) { // дубликат пользователя
     statusCode = constants.HTTP_STATUS_CONFLICT; // 409
