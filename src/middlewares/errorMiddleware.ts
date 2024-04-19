@@ -9,6 +9,13 @@ type TErrorIncome = ErrorObject & Error;
 function errorMiddleware(err: TErrorIncome, req: Request, res: Response, next: NextFunction) {
   //
   let statusCode = err.statusCode || constants.HTTP_STATUS_INTERNAL_SERVER_ERROR; // 500
+  /*
+    Даниил, я не понимаю что вы имеете ввиду?
+    У меня всегда сюда попадает ошибка с сообщением.
+    Ссобщение генерирует монгус или я сам.
+    В любом случае текст ошибки всегда будет.
+    Прошу показать кодом, для примера, если не сложно, как нужно сделать для вас?
+  */
   let message = err.message || 'На сервере ошибка';
 
   if (err.code === 11000) { // дубликат пользователя
@@ -23,7 +30,7 @@ function errorMiddleware(err: TErrorIncome, req: Request, res: Response, next: N
 
   if (err instanceof Error.CastError) { // ошибка типа данных
     statusCode = constants.HTTP_STATUS_BAD_REQUEST; // 400
-    message = err.reason ? err.reason.message : 'Формат данных не соответствует ожидаемому';
+    message = err.reason ? err.reason.message : 'Формат данных не соответствует ожидаемому'; // такая формулировака норм?
   }
 
 
