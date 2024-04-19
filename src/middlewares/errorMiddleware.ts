@@ -16,7 +16,7 @@ function errorMiddleware(err: TErrorIncome, req: Request, res: Response, next: N
     В любом случае текст ошибки всегда будет.
     Прошу показать кодом, для примера, если не сложно, как нужно сделать для вас?
   */
-  let message = err.message.length < 1 ? 'На сервере ошибка' : err.message.length;
+  let message = err.message.length < 1 ? 'На сервере ошибка' : err.message;
 
   if (err.code === 11000) { // дубликат пользователя
     statusCode = constants.HTTP_STATUS_CONFLICT; // 409
