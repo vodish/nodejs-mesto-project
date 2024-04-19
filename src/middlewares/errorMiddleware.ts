@@ -4,32 +4,27 @@ import { Error } from 'mongoose';
 import { ErrorObject } from '../utils/errors';
 
 type TErrorIncome = ErrorObject & Error;
+const E500 = constants.HTTP_STATUS_INTERNAL_SERVER_ERROR;
+const E409 = constants.HTTP_STATUS_CONFLICT;
+const E400 = constants.HTTP_STATUS_BAD_REQUEST;
 
 
 function errorMiddleware(err: TErrorIncome, req: Request, res: Response, next: NextFunction) {
   //
-  let statusCode = err.statusCode || constants.HTTP_STATUS_INTERNAL_SERVER_ERROR; // 500
-  /*
-    Даниил, я не понимаю что вы имеете ввиду?
-    У меня всегда сюда попадает ошибка с сообщением.
-    Ссобщение генерирует монгус или я сам.
-    В любом случае текст ошибки всегда будет.
-    Прошу показать кодом, для примера, если не сложно, как нужно сделать для вас?
-  */
-  let message = err.message.length < 1 ? 'На сервере ошибка' : err.message;
+  let statusCode = err.statusCode || E500;
+  let message = statusCode === E500 ? 'На сервере произошла ошибка' : err.message;
+
 
   if (err.code === 11000) { // дубликат пользователя
-    statusCode = constants.HTTP_STATUS_CONFLICT; // 409
-    // console.log(err);
+    statusCode = E409;
   }
 
-  if (err instanceof Error.ValidationError) {
-    statusCode = constants.HTTP_STATUS_BAD_REQUEST; // 400
+  if (err instanceof Error.ValidationError) { // ошибка валидации схемы монгуса
+    statusCode = E400;
   }
-  // console.log(typeof err);
 
   if (err instanceof Error.CastError) { // ошибка типа данных
-    statusCode = constants.HTTP_STATUS_BAD_REQUEST; // 400
+    statusCode = E400;
     message = err.reason ? err.reason.message : 'Формат данных не соответствует ожидаемому'; // такая формулировака норм?
   }
 
