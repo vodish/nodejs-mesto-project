@@ -23,7 +23,7 @@ function errorMiddleware(err: TErrorIncome, req: Request, res: Response, next: N
 
   if (err instanceof Error.CastError) { // ошибка типа данных
     statusCode = constants.HTTP_STATUS_BAD_REQUEST; // 400
-    message = err.reason ? err.reason.message : 'HTTP_STATUS_BAD_REQUEST';
+    message = err.reason ? err.reason.message : 'Формат данных не соответствует ожидаемому';
   }
 
 
