@@ -2,11 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import { constants } from 'http2';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '../models/userModel';
-import { error401, error404 } from '../utils/errors';
+import UserModel from '../models/userModel';
+import { error401, error404, error409 } from '../utils/errors';
+import { less } from '../utils/tools';
 
 
-const SALT_KEY = process.env.SALT_KEY || '';
+const SALT_KEY = process.env.SALT_KEY || 'dev-key';
 
 
 // создать пользователя
@@ -21,9 +22,24 @@ export async function userCreate(req: Request, res: Response, next: NextFunction
 
   bcrypt
     .hash(dataUser.password, 10)
-    .then((hash) => User.create({ ...dataUser, password: hash }))
-    .then((user) => res.status(constants.HTTP_STATUS_CREATED).send(user))
-    .catch(next);
+    .then((hash) => UserModel.create({ ...dataUser, password: hash }))
+    .then((user) => {
+      res
+        .status(constants.HTTP_STATUS_CREATED)
+        /*
+        Добавил универсальную функцию less() для объектов,
+        которая убирает указанные поля через второй и последующий параметр.
+        Не стал её делать как метод объекта UserModel,
+        потому что она может пригодится в других местах, для других объектов.
+        */
+        .send(less(user, 'password'));
+    })
+    .catch((err) => {
+      if (err.code === 11000) {
+        err.statusCode =  constants.HTTP_STATUS_CONFLICT;
+      }
+      next(err);
+    });
 }
 
 
@@ -33,7 +49,7 @@ export function userLogin(req: Request, res: Response, next: NextFunction) {
   const { email, password } = req.body;
   let tokenObject: { _id: string };
 
-  User
+  UserModel
     .findOne({ email })
     .select('+password')
     .orFail(error404(`Пользователь c емейлом '${email}' не найден`))
@@ -60,7 +76,7 @@ export function userLogin(req: Request, res: Response, next: NextFunction) {
 // получить всех пользователей
 export function userAll(req: Request, res: Response, next: NextFunction) {
   //
-  User
+  UserModel
     .find()
     .then((list) => res.send(list))
     .catch(next);
@@ -71,7 +87,7 @@ export function userAll(req: Request, res: Response, next: NextFunction) {
 // получить авторизованного пользователя
 export function userMe(req: Request, res: Response, next: NextFunction) {
   //
-  User
+  UserModel
     .findById(req.user._id)
     .orFail(error404('Пользователь не найден'))
     .then((user) => res.send(user))
@@ -82,7 +98,7 @@ export function userMe(req: Request, res: Response, next: NextFunction) {
 // получить пользователя по id
 export function userById(req: Request, res: Response, next: NextFunction) {
   //
-  User
+  UserModel
     .findById(req.params.userId)
     .orFail(error404('Пользователь не найден.'))
     .then((user) => res.send(user))
@@ -96,7 +112,7 @@ export function userUpdate(req: Request, res: Response, next: NextFunction) {
   //
   const { name, about } = req.body;
 
-  User
+  UserModel
     .findByIdAndUpdate(
       req.user._id,
       { name, about },
@@ -112,7 +128,7 @@ export function userAvatarUpdate(req: Request, res: Response, next: NextFunction
   //
   const { avatar } = req.body;
 
-  User
+  UserModel
     .findByIdAndUpdate(
       req.user._id,
       { avatar },

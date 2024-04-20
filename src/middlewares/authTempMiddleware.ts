@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { error401 } from '../utils/errors';
 
-const SALT_KEY = process.env.SALT_KEY || '';
+const SALT_KEY = process.env.SALT_KEY || 'dev-key';
 
 
 function authTempMiddleware(req: Request, res: Response, next: NextFunction) {

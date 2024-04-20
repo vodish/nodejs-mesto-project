@@ -15,14 +15,10 @@ import { error404 } from './utils/errors';
 
 // переменные окружения
 const {
-  MONGOO_CONNECT,
+  MONGOO_CONNECT = 'mongodb://localhost:27017/mestodb',
   SERVER_PORT = 3000,
 } = process.env;
 
-
-if (!MONGOO_CONNECT) {
-  throw new Error('Переменная окружения не найдена: /.env/MONGOO_CONNECT');
-}
 
 
 
