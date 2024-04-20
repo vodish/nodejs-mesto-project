@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { constants } from 'http2';
 import CardModel from '../models/cardModel';
-import { error400, error404 } from '../utils/errors';
+import { error400, error403, error404 } from '../utils/errors';
+import { less } from '../utils/tools';
 
 
 // получить все карточки
@@ -21,25 +22,29 @@ export function сardInsert(req: Request, res: Response, next: NextFunction) {
   CardModel
     .create({ name, link, owner })
     .then((card) => res.status(constants.HTTP_STATUS_CREATED).send(card))
-    .catch(next);
+    .catch((err) => next(error400(err.message)));
 }
 
 
 // удалить карточку
-export function сardDelete(req: Request, res: Response, next: NextFunction) {
+export async function сardDelete(req: Request, res: Response, next: NextFunction) {
   //
+  const card = await CardModel.findById(req.params.cardId).catch(next);
+
+  if (!card) {
+    return next(error404('Карточка не нейдена'));
+  }
+
+  if (card.owner !== req.user._id) {
+    return next(error403('Чужая карточка недоступна к удалению'));
+  }
+
   CardModel
-    .findOneAndRemove({
-      _id: req.params.cardId,
-      owner: req.user._id,
-    })
-    .then((data) => {
-      if (!data) {
-        throw error404('Карточка не нейдена');
-      }
-      res.send({ operation: 'Карточка удалена' });
-    })
+    .findByIdAndDelete(req.params.cardId)
+    .then(() => res.send({ operation: 'Карточка удалена' }))
     .catch(next);
+
+  return next();
 }
 
 
@@ -68,7 +73,7 @@ export function сardLike(req: Request, res: Response, next: NextFunction) {
     )
     .orFail(error404('Карточка не найдена или уже лайкнута'))
     .then((card) => {
-      const card1 = JSON.parse(JSON.stringify(card));
+      const card1 = less(card);
       res.send({ ...card1, likes_cnt: card1.likes.length });
     })
     .catch(next);
@@ -89,7 +94,7 @@ export function сardDislike(req: Request, res: Response, next: NextFunction) {
         throw error404('Не найдена карточка');
       }
 
-      const card1 = JSON.parse(JSON.stringify(card));
+      const card1 = less(card);
       res.send({ ...card1, likes_cnt: card1.likes.length });
     })
     .catch(next);

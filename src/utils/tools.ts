@@ -1,6 +1,6 @@
 
 
-export type TSomeObject =  {
+export type TSomeObject = {
   [key: string]: any
 }
 

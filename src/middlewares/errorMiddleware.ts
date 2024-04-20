@@ -13,14 +13,14 @@ function errorMiddleware(err: TErrorIncome, req: Request, res: Response, next: N
   let statusCode = err.statusCode || E500;
   let message = statusCode === E500 ? 'На сервере произошла ошибка' : err.message;
 
-
-  if (err instanceof Error.ValidationError) { // ошибка валидации схемы монгуса
-    statusCode = E400;
-  }
+  // if (err instanceof Error.ValidationError) { // ошибка валидации схемы монгуса
+  //   statusCode = E400;
+  //   // console.log(err);
+  // }
 
   if (err instanceof Error.CastError) { // ошибка типа данных
     statusCode = E400;
-    message = err.reason ? err.reason.message : 'Формат данных не соответствует ожидаемому'; // такая формулировака норм?
+    message = err.reason ? err.reason.message : 'Формат данных не соответствует ожидаемому';
   }
 
 

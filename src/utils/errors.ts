@@ -21,6 +21,10 @@ export function error401(message: string) {
   return new ErrorObject(message, constants.HTTP_STATUS_UNAUTHORIZED);
 }
 
+export function error403(message: string) {
+  return new ErrorObject(message, constants.HTTP_STATUS_FORBIDDEN);
+}
+
 export function error404(message: string) {
   return new ErrorObject(message, constants.HTTP_STATUS_NOT_FOUND);
 }
