@@ -3,7 +3,8 @@ import { constants } from 'http2';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import UserModel from '../models/userModel';
-import { error401, error404 } from '../utils/errors';
+import { error400, error401, error404, error409 } from '../utils/errors';
+import { Error } from 'mongoose';
 import { less } from '../utils/tools';
 
 
@@ -37,9 +38,13 @@ export async function userCreate(req: Request, res: Response, next: NextFunction
         .send(less(user, 'password'));
     })
     .catch((err) => {
-      if (err.code === 11000) {
-        err.statusCode = constants.HTTP_STATUS_CONFLICT;
+      if (err instanceof Error.ValidationError) {
+        return next(error400(err.message));
       }
+      else if (err.code === 11000) {
+        return next(error409(err.message)); // дубликат пользователя
+      }
+
       next(err);
     });
 }
