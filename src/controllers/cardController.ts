@@ -66,7 +66,7 @@ export function сardLike(req: Request, res: Response, next: NextFunction) {
       { $push: { likes: req.user._id } },
       { new: true },
     )
-    .orFail(error400('Карточка не найдена или уже лайкнута'))
+    .orFail(error404('Карточка не найдена или уже лайкнута'))
     .then((card) => {
       const card1 = JSON.parse(JSON.stringify(card));
       res.send({ ...card1, likes_cnt: card1.likes.length });
