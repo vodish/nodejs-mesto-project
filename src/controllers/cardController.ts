@@ -35,16 +35,16 @@ export async function сardDelete(req: Request, res: Response, next: NextFunctio
     return next(error404('Карточка не нейдена'));
   }
 
-  if (card.owner !== req.user._id) {
+  console.log(String(card.owner), req.user._id);
+
+  if (String(card.owner) !== req.user._id) {
     return next(error403('Чужая карточка недоступна к удалению'));
   }
 
-  CardModel
+  return CardModel
     .findByIdAndDelete(req.params.cardId)
-    .then(() => res.send({ operation: 'Карточка удалена' }))
+    .then(() => res.send({ done: 'Карточка удалена' }))
     .catch(next);
-
-  return next();
 }
 
 
