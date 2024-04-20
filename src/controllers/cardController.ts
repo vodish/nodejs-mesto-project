@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { constants } from 'http2';
+import { Error } from 'mongoose';
 import CardModel from '../models/cardModel';
 import { error400, error403, error404 } from '../utils/errors';
 import { less } from '../utils/tools';
@@ -22,7 +23,12 @@ export function сardInsert(req: Request, res: Response, next: NextFunction) {
   CardModel
     .create({ name, link, owner })
     .then((card) => res.status(constants.HTTP_STATUS_CREATED).send(card))
-    .catch((err) => next(error400(err.message)));
+    .catch((err) => {
+      if (err instanceof Error.ValidationError) {
+        return next(error400(err.message));
+      }
+      return next(err);
+    });
 }
 
 

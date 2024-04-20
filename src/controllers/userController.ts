@@ -1,11 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 import { constants } from 'http2';
+import { Error } from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import UserModel from '../models/userModel';
-import { error400, error401, error404, error409 } from '../utils/errors';
-import { Error } from 'mongoose';
 import { less } from '../utils/tools';
+import {
+  error400,
+  error401,
+  error404,
+  error409,
+} from '../utils/errors';
 
 
 const SALT_KEY = process.env.SALT_KEY || 'dev-key';
@@ -41,11 +46,11 @@ export async function userCreate(req: Request, res: Response, next: NextFunction
       if (err instanceof Error.ValidationError) {
         return next(error400(err.message));
       }
-      else if (err.code === 11000) {
+      if (err.code === 11000) {
         return next(error409(err.message)); // дубликат пользователя
       }
 
-      next(err);
+      return next(err);
     });
 }
 
@@ -71,7 +76,6 @@ export function userLogin(req: Request, res: Response, next: NextFunction) {
       }
 
       const token = jwt.sign(tokenObject, SALT_KEY, { expiresIn: '7d' });
-
       res.cookie('user_token', token, { httpOnly: true });
       res.send({ token });
     })
@@ -126,7 +130,12 @@ export function userUpdate(req: Request, res: Response, next: NextFunction) {
       { new: true, runValidators: true },
     )
     .then((user) => res.send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err instanceof Error.ValidationError) {
+        return next(error400(err.message));
+      }
+      return next(err);
+    });
 }
 
 
@@ -142,5 +151,10 @@ export function userAvatarUpdate(req: Request, res: Response, next: NextFunction
       { new: true, runValidators: true },
     )
     .then((user) => res.send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err instanceof Error.ValidationError) {
+        return next(error400(err.message));
+      }
+      return next(err);
+    });
 }
