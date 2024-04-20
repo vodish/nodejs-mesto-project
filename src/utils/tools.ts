@@ -1,13 +1,13 @@
 
 
-export interface ISomeObject {
+export type TSomeObject =  {
   [key: string]: any
 }
 
-export function less(obj: ISomeObject, ...props: string[]) {
-  const obj1 = JSON.parse(JSON.stringify(obj)) as ISomeObject;
+export function less(obj: TSomeObject, ...props: string[]) {
+  const obj1 = JSON.parse(JSON.stringify(obj)) as TSomeObject;
 
-  return props.reduce((result: ISomeObject, prop) => {
+  return props.reduce((result: TSomeObject, prop) => {
     if (result[prop] !== undefined) {
       delete result[prop];
     }
