@@ -3,7 +3,7 @@ import { constants } from 'http2';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import UserModel from '../models/userModel';
-import { error401, error404, error409 } from '../utils/errors';
+import { error401, error404 } from '../utils/errors';
 import { less } from '../utils/tools';
 
 
@@ -27,16 +27,18 @@ export async function userCreate(req: Request, res: Response, next: NextFunction
       res
         .status(constants.HTTP_STATUS_CREATED)
         /*
+        Айсалкын,
         Добавил универсальную функцию less() для объектов,
-        которая убирает указанные поля через второй и последующий параметр.
-        Не стал её делать как метод объекта UserModel,
-        потому что она может пригодится в других местах, для других объектов.
+        которая убирает указанные ключи объекта через второй и последующий параметр.
+        Не стал делать методом объекта UserModel,
+        потому что функция less() может пригодится в других местах, для других объектов.
+        Переиспользование кода, туда-сюда... ))
         */
         .send(less(user, 'password'));
     })
     .catch((err) => {
       if (err.code === 11000) {
-        err.statusCode =  constants.HTTP_STATUS_CONFLICT;
+        err.statusCode = constants.HTTP_STATUS_CONFLICT;
       }
       next(err);
     });

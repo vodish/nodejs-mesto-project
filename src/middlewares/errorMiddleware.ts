@@ -3,7 +3,7 @@ import { constants } from 'http2';
 import { Error } from 'mongoose';
 import { ErrorObject } from '../utils/errors';
 
-type TErrorIncome = ErrorObject & Error;
+export type TErrorIncome = ErrorObject & Error;
 const E500 = constants.HTTP_STATUS_INTERNAL_SERVER_ERROR;
 const E400 = constants.HTTP_STATUS_BAD_REQUEST;
 

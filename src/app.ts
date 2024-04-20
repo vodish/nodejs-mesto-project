@@ -21,7 +21,6 @@ const {
 
 
 
-
 // подключение к бд
 mongoose.set('strictQuery', false);
 mongoose.connect(MONGOO_CONNECT);
