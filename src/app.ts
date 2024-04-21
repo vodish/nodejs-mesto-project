@@ -10,7 +10,8 @@ import cardRouter from './routes/cardRoute';
 import { userCreate, userLogin } from './controllers/userController';
 import { requestLogger, errorLogger } from './middlewares/loggerMiddleware';
 import { error404 } from './utils/errors';
-
+import { vuIn, vuUp } from './middlewares/validationMiddleware';
+import { errors as errorCelebrate } from 'celebrate';
 
 
 // переменные окружения
@@ -40,17 +41,16 @@ server.use(authTempMiddleware); // авторизация
 
 
 // маршруты
-server.post('/signin', userLogin); // вход пользователя
-server.post('/signup', userCreate); // регистрация пользователя
+server.post('/signup', vuUp, userCreate); // регистрация пользователя
+server.post('/signin', vuIn, userLogin); // вход пользователя
 server.use('/users', userRouter);
 server.use('/cards', cardRouter);
-
+server.use(() => { throw error404('Страница не найдена...'); });
 
 
 // обработчик ошибок
-server.use(() => { throw error404('Страница не найдена...'); });
 server.use(errorLogger);
-server.use(errorMiddleware);
+server.use(errorCelebrate(), errorMiddleware);
 
 // запуск
 server.listen(+SERVER_PORT);
