@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { celebrate, Joi, Segments } from 'celebrate';
 
+
+// валидация параметров пользователя
+
 export const vuUp = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -9,7 +12,7 @@ export const vuUp = celebrate({
     about: Joi.string().required().min(2).max(200),
     avatar: Joi.string().required().uri(),
   }),
-})
+});
 
 
 export const vuIn = celebrate({
@@ -17,45 +20,48 @@ export const vuIn = celebrate({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
-})
+});
+
+export const vuMe = celebrate({
+  cookies: Joi.object().keys({
+    user_token: Joi.string().required().min(150),
+  }),
+});
 
 
-export function vuMe(req: Request, res: Response, next: NextFunction) {
+export const vuById = celebrate({
+  body: Joi.object().keys({}),
+});
 
-  next();
-}
 
-export function vuById(req: Request, res: Response, next: NextFunction) {
+export const vuUpd = celebrate({
+  body: Joi.object().keys({}),
+});
 
-  next();
-}
 
-export function vuUpd(req: Request, res: Response, next: NextFunction) {
+export const vuUpdAvatar = celebrate({
+  body: Joi.object().keys({}),
+});
 
-  next();
-}
 
-export function vuUpdAvatar(req: Request, res: Response, next: NextFunction) {
 
-  next();
-}
+// валидация параметров карточки
 
-export function vcIns(req: Request, res: Response, next: NextFunction) {
+export const vcIns = celebrate({
+  body: Joi.object().keys({}),
+});
 
-  next();
-}
 
-export function vcDel(req: Request, res: Response, next: NextFunction) {
+export const vcDel = celebrate({
+  body: Joi.object().keys({}),
+});
 
-  next();
-}
 
-export function vcLike(req: Request, res: Response, next: NextFunction) {
+export const vcLike = celebrate({
+  body: Joi.object().keys({}),
+});
 
-  next();
-}
 
-export function vcDisl(req: Request, res: Response, next: NextFunction) {
-
-  next();
-}
+export const vcDisl = celebrate({
+  body: Joi.object().keys({}),
+});
