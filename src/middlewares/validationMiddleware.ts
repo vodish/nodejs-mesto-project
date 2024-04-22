@@ -1,5 +1,23 @@
 import { celebrate, Joi } from 'celebrate';
 
+/*
+Айсалкын,
+> Валидатор uri для валидации ссылок в joi, к сожалению, пропускает
+> некорректные значения, в частности http//:test
+проверил я селебрейт, не пускает он такие ссылки как вы указываете,
+возможно в селебрейте были изменения...
+
+но для формальности я добавил к обработчику .uri() дополнительную
+проверку через регулярное выражение, в данном случае не вижу
+большого смысла упарываться в регулярки, поскольку пакет validate
+в схеме монгуса тоже проверяет значение на url
+validator: (v: string) => isURL(v),
+
+моя регулярка проверяет чтобы имя домена обязательно содержала точку
+*/
+
+const reUrl = /\/\/[a-z][a-z0-9]+\.[a-z0-9]+/i;
+
 
 // валидация пользователя
 
@@ -9,7 +27,7 @@ export const vuUp = celebrate({
     password: Joi.string().required().min(3),
     name: Joi.string().required().min(2).max(30),
     about: Joi.string().required().min(2).max(200),
-    avatar: Joi.string().required().uri(),
+    avatar: Joi.string().required().uri().regex(reUrl),
   }),
 });
 
@@ -25,36 +43,24 @@ export const vuIn = celebrate({
 
 // авторизованный пользователь
 
-const token = {
-  cookies: Joi.object().keys({
-    user_token: Joi.string().required().min(150),
-  }),
-};
-
-export const vuMe = celebrate({ ...token });
-
-
 export const vuById = celebrate({
-  ...token,
   params: Joi.object().keys({
-    userId: Joi.string().required().min(24),
+    userId: Joi.string().required().length(24),
   }),
 });
 
 
 export const vuUpd = celebrate({
-  ...token,
   body: Joi.object().keys({
-    name: Joi.string().required().min(2),
-    about: Joi.string().required().min(2),
+    name: Joi.string().required().min(2).max(30),
+    about: Joi.string().required().min(2).max(200),
   }),
 });
 
 
 export const vuUpdAvatar = celebrate({
-  ...token,
   body: Joi.object().keys({
-    avatar: Joi.string().required().uri(),
+    avatar: Joi.string().required().regex(reUrl).uri(),
   }),
 });
 
@@ -63,33 +69,29 @@ export const vuUpdAvatar = celebrate({
 // валидация параметров карточки
 
 export const vcIns = celebrate({
-  ...token,
   body: Joi.object().keys({
     name: Joi.string().required(),
-    link: Joi.string().required().uri(),
+    link: Joi.string().required().uri().regex(reUrl),
   }),
 });
 
 
 export const vcDel = celebrate({
-  ...token,
   params: Joi.object().keys({
-    cardId: Joi.string().required().min(24),
+    cardId: Joi.string().required().length(24),
   }),
 });
 
 
 export const vcLike = celebrate({
-  ...token,
   params: Joi.object().keys({
-    cardId: Joi.string().required().min(24),
+    cardId: Joi.string().required().length(24),
   }),
 });
 
 
 export const vcDisl = celebrate({
-  ...token,
   params: Joi.object().keys({
-    cardId: Joi.string().required().min(24),
+    cardId: Joi.string().required().length(24),
   }),
 });

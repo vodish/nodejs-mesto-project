@@ -32,14 +32,6 @@ export async function userCreate(req: Request, res: Response, next: NextFunction
     .then((user) => {
       res
         .status(constants.HTTP_STATUS_CREATED)
-        /*
-        Айсалкын,
-        Добавил универсальную функцию less() для объектов,
-        которая убирает указанные ключи объекта через второй и последующий параметр.
-        Не стал делать методом объекта UserModel,
-        потому что функция less() может пригодится в других местах, для других объектов.
-        Переиспользование кода, туда-сюда... ))
-        */
         .send(less(user, 'password'));
     })
     .catch((err) => {
