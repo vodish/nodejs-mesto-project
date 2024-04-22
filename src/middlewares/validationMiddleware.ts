@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { celebrate, Joi, Segments } from 'celebrate';
 
 
-// валидация параметров пользователя
+// валидация пользователя
 
 export const vuUp = celebrate({
   body: Joi.object().keys({
@@ -22,25 +22,41 @@ export const vuIn = celebrate({
   }),
 });
 
-export const vuMe = celebrate({
+
+
+// авторизованный пользователь
+
+const token = {
   cookies: Joi.object().keys({
     user_token: Joi.string().required().min(150),
+  }),
+};
+
+export const vuMe = celebrate({ ...token });
+
+
+export const vuById = celebrate({
+  ...token,
+  params: Joi.object().keys({
+    userId: Joi.string().required().min(24),
   }),
 });
 
 
-export const vuById = celebrate({
-  body: Joi.object().keys({}),
-});
-
-
 export const vuUpd = celebrate({
-  body: Joi.object().keys({}),
+  ...token,
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2),
+    about: Joi.string().required().min(2),
+  })
 });
 
 
 export const vuUpdAvatar = celebrate({
-  body: Joi.object().keys({}),
+  ...token,
+  body: Joi.object().keys({
+    avatar: Joi.string().required().uri(),
+  })
 });
 
 
@@ -48,20 +64,28 @@ export const vuUpdAvatar = celebrate({
 // валидация параметров карточки
 
 export const vcIns = celebrate({
-  body: Joi.object().keys({}),
+  body: Joi.object().keys({
+    user_token: Joi.string().required().min(150),
+  }),
 });
 
 
 export const vcDel = celebrate({
-  body: Joi.object().keys({}),
+  body: Joi.object().keys({
+    user_token: Joi.string().required().min(150),
+  }),
 });
 
 
 export const vcLike = celebrate({
-  body: Joi.object().keys({}),
+  body: Joi.object().keys({
+    user_token: Joi.string().required().min(150),
+  }),
 });
 
 
 export const vcDisl = celebrate({
-  body: Joi.object().keys({}),
+  body: Joi.object().keys({
+    user_token: Joi.string().required().min(150),
+  }),
 });

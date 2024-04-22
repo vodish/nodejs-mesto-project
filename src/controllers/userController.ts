@@ -113,7 +113,12 @@ export function userById(req: Request, res: Response, next: NextFunction) {
     .findById(req.params.userId)
     .orFail(error404('Пользователь не найден.'))
     .then((user) => res.send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err instanceof Error.CastError) {
+        return next(error400(err.message));
+      }
+      next(err);
+    });
 }
 
 
