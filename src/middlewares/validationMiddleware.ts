@@ -60,7 +60,7 @@ export const vuUpd = celebrate({
 
 export const vuUpdAvatar = celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().required().regex(reUrl).uri(),
+    avatar: Joi.string().required().uri().regex(reUrl),
   }),
 });
 
