@@ -117,7 +117,7 @@ export function userById(req: Request, res: Response, next: NextFunction) {
       if (err instanceof Error.CastError) {
         return next(error400(err.message));
       }
-      next(err);
+      return next(err);
     });
 }
 

@@ -1,5 +1,4 @@
 
-
 export type TSomeObject = {
   [key: string]: any
 }

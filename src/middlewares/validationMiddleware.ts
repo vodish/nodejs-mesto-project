@@ -1,5 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
-import { celebrate, Joi, Segments } from 'celebrate';
+import { celebrate, Joi } from 'celebrate';
 
 
 // валидация пользователя
@@ -48,7 +47,7 @@ export const vuUpd = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2),
     about: Joi.string().required().min(2),
-  })
+  }),
 });
 
 
@@ -56,7 +55,7 @@ export const vuUpdAvatar = celebrate({
   ...token,
   body: Joi.object().keys({
     avatar: Joi.string().required().uri(),
-  })
+  }),
 });
 
 
@@ -64,28 +63,33 @@ export const vuUpdAvatar = celebrate({
 // валидация параметров карточки
 
 export const vcIns = celebrate({
+  ...token,
   body: Joi.object().keys({
-    user_token: Joi.string().required().min(150),
+    name: Joi.string().required(),
+    link: Joi.string().required().uri(),
   }),
 });
 
 
 export const vcDel = celebrate({
-  body: Joi.object().keys({
-    user_token: Joi.string().required().min(150),
+  ...token,
+  params: Joi.object().keys({
+    cardId: Joi.string().required().min(24),
   }),
 });
 
 
 export const vcLike = celebrate({
-  body: Joi.object().keys({
-    user_token: Joi.string().required().min(150),
+  ...token,
+  params: Joi.object().keys({
+    cardId: Joi.string().required().min(24),
   }),
 });
 
 
 export const vcDisl = celebrate({
-  body: Joi.object().keys({
-    user_token: Joi.string().required().min(150),
+  ...token,
+  params: Joi.object().keys({
+    cardId: Joi.string().required().min(24),
   }),
 });

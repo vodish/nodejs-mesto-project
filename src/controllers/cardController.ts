@@ -35,13 +35,18 @@ export function сardInsert(req: Request, res: Response, next: NextFunction) {
 // удалить карточку
 export async function сardDelete(req: Request, res: Response, next: NextFunction) {
   //
-  const card = await CardModel.findById(req.params.cardId).catch(next);
+  const card = await CardModel
+    .findById(req.params.cardId)
+    .catch((err) => {
+      if (err instanceof Error.CastError) {
+        return next(error400(err.message));
+      }
+      return next(err);
+    });
 
   if (!card) {
     return next(error404('Карточка не нейдена'));
   }
-
-  console.log(String(card.owner), req.user._id);
 
   if (String(card.owner) !== req.user._id) {
     return next(error403('Чужая карточка недоступна к удалению'));
@@ -57,17 +62,6 @@ export async function сardDelete(req: Request, res: Response, next: NextFunctio
 // лайк
 export function сardLike(req: Request, res: Response, next: NextFunction) {
   //
-  // CardModel
-  //   .findById(req.params.cardId)
-  //   .orFail(error404('Не найдена карточка'))
-  //   .then((card) => {
-  //     if (card.likes.includes(req.user._id as ObjectId)) {
-  //       throw error400('Карточка уже лайкнута');
-  //     }
-  //   })
-  //   .catch(next);
-
-  //
   CardModel
     .findOneAndUpdate(
       {
@@ -82,7 +76,12 @@ export function сardLike(req: Request, res: Response, next: NextFunction) {
       const card1 = less(card);
       res.send({ ...card1, likes_cnt: card1.likes.length });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err instanceof Error.CastError) {
+        return next(error400(err.message));
+      }
+      return next(err);
+    });
 }
 
 
@@ -103,5 +102,10 @@ export function сardDislike(req: Request, res: Response, next: NextFunction) {
       const card1 = less(card);
       res.send({ ...card1, likes_cnt: card1.likes.length });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err instanceof Error.CastError) {
+        return next(error400(err.message));
+      }
+      return next(err);
+    });
 }
