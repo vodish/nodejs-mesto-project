@@ -29,30 +29,30 @@ mongoose.connect(MONGOO_CONNECT);
 
 
 // сервер
-const server = express();
+const app = express();
 
 // предварительные обработчики
-server.use(requestLogger);
-server.use(cookieParser());
-server.use(express.json());
+app.use(requestLogger);
+app.use(cookieParser());
+app.use(express.json());
 // server.use(express.urlencoded())
 // server.use(multer().none()); // const formdata = multer();
-server.use(authTempMiddleware); // авторизация
+app.use(authTempMiddleware); // авторизация
 
 
 // маршруты
-server.post('/signup', vuUp, userCreate); // регистрация пользователя
-server.post('/signin', vuIn, userLogin); // вход пользователя
-server.use('/users', userRouter);
-server.use('/cards', cardRouter);
-server.use(() => { throw error404('Страница не найдена...'); });
+app.post('/signup', vuUp, userCreate); // регистрация пользователя
+app.post('/signin', vuIn, userLogin); // вход пользователя
+app.use('/users', userRouter);
+app.use('/cards', cardRouter);
+app.use(() => { throw error404('Страница не найдена...'); });
 
 
 // обработчик ошибок
-server.use(errorLogger);
-server.use(errorCelebrate(), errorMiddleware);
+app.use(errorLogger);
+app.use(errorCelebrate(), errorMiddleware);
 
 // запуск
-server.listen(+SERVER_PORT);
+app.listen(+SERVER_PORT);
 
 console.log(`Сервер запущен http://localhost:${SERVER_PORT}`);
