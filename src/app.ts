@@ -32,6 +32,7 @@ mongoose.connect(MONGOO_CONNECT);
 // сервер
 const app = express();
 app.use(cors());
+app.get('/test', crashTest); // краш тест по заданию
 app.get('/crash-test', crashTest); // краш тест по заданию
 
 // предварительные обработчики
