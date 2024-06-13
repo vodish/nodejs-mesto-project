@@ -25,7 +25,14 @@ const {
 
 // подключение к бд
 mongoose.set('strictQuery', false);
-mongoose.connect(MONGOO_CONNECT);
+mongoose.connect(MONGOO_CONNECT)
+  .then(() => {
+    console.log('Connection estabislished with MongoDB');
+  })
+  .catch(error => {
+    console.error(MONGOO_CONNECT);
+    console.error(error.message);
+  });
 
 
 
