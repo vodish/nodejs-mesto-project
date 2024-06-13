@@ -13,7 +13,8 @@ import { requestLogger, errorLogger } from './middlewares/loggerMiddleware';
 import { error404 } from './utils/errors';
 import { vuIn, vuUp } from './middlewares/validationMiddleware';
 import { crashTest } from './controllers/crashController';
-
+import cors from 'cors';
+// const cors = require('cors')
 
 // переменные окружения
 const {
@@ -31,7 +32,7 @@ mongoose.connect(MONGOO_CONNECT);
 
 // сервер
 const app = express();
-
+app.use(cors());
 app.get('/crash-test', crashTest); // краш тест по заданию
 
 // предварительные обработчики

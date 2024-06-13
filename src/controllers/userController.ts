@@ -13,7 +13,7 @@ import {
 } from '../utils/errors';
 
 
-const SALT_KEY = process.env.SALT_KEY || 'dev-key';
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-key';
 
 
 // создать пользователя
@@ -67,7 +67,7 @@ export function userLogin(req: Request, res: Response, next: NextFunction) {
         throw error401('Пароль не подходит');
       }
 
-      const token = jwt.sign(tokenObject, SALT_KEY, { expiresIn: '7d' });
+      const token = jwt.sign(tokenObject, JWT_SECRET, { expiresIn: '7d' });
       res.cookie('user_token', token, { httpOnly: true });
       res.send({ token });
     })
