@@ -4,6 +4,7 @@
   "description": "Проектная_работа_1 на курсе backend nodejs developer от яндекс парктикума",
   "main": "dist/app.js",
   "scripts": {
+    "pm2": "NODE_ENV=production pm2 start src/app.ts --watch -i max",
     "lint": "npx eslint src/**/*.ts",
     "build": "tsc",
     "dev": "ts-node-dev src/app.ts",
