@@ -13,8 +13,7 @@ import { requestLogger, errorLogger } from './middlewares/loggerMiddleware';
 import { error404 } from './utils/errors';
 import { vuIn, vuUp } from './middlewares/validationMiddleware';
 import { crashTest } from './controllers/crashController';
-import cors from 'cors';
-// const cors = require('cors')
+const cors = require('cors')
 
 // переменные окружения
 const {
