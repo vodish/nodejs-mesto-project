@@ -12,7 +12,8 @@ const E500 = constants.HTTP_STATUS_INTERNAL_SERVER_ERROR;
 function errorMiddleware(err: TErrorIncome, req: Request, res: Response, next: NextFunction) {
   //
   const statusCode = err.statusCode || E500;
-  const message = statusCode === E500 ? 'На сервере произошла ошибка' : err.message;
+  // const message = statusCode === E500 ? 'На сервере произошла ошибка' : err.message;
+  const message = statusCode === E500 ? err.message : err.message;
 
   // if (err.code === 11000) { // дубликат пользователя
   //   statusCode = E409;
