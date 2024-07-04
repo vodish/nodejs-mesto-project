@@ -9,8 +9,8 @@ export const {
 
 
 // подключение к бд
-const mongoo = mongoose.set('strictQuery', false);
-mongoo.connect(MONGOO_CONNECT)
+const mongo = mongoose.set('strictQuery', false);
+mongo.connect(MONGOO_CONNECT)
   .then(() => {
     console.log('Connection estabislished with MongoDB');
   })
@@ -20,4 +20,4 @@ mongoo.connect(MONGOO_CONNECT)
   });
 
 
-export default mongoo;
+export default mongo;
