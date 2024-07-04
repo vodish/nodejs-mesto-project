@@ -7,10 +7,9 @@ export const {
 } = process.env;
 
 
-
-// подключение к бд
-const mongo = mongoose.set('strictQuery', false);
-mongo.connect(MONGOO_CONNECT)
+mongoose
+  .set('strictQuery', false)
+  .connect(MONGOO_CONNECT)
   .then(() => {
     console.log('Connection estabislished with MongoDB');
   })
@@ -19,5 +18,3 @@ mongo.connect(MONGOO_CONNECT)
     console.error(error.message);
   });
 
-
-export default mongo;

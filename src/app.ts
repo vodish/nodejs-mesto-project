@@ -17,6 +17,7 @@ const cors = require('cors')
 import { SERVER_PORT } from './mongo'
 
 
+
 // сервер
 const app = express();
 app.use(cors());
@@ -46,6 +47,8 @@ app.use(errorLogger);
 app.use(errorCelebrate(), errorMiddleware);
 
 // запуск
-app.listen(+SERVER_PORT);
+app.listen(+SERVER_PORT, () => {
+  // if (err) console.log(err);
+  console.log(`Сервер запущен http://localhost:${SERVER_PORT}`);
+});
 
-console.log(`Сервер запущен http://localhost:${SERVER_PORT}`);
