@@ -25,12 +25,10 @@ app.get('/test', testTest); // тест, сервер просто доступ�
 app.get('/mongo-test', mongoTest); // тест, подключения к mongodb
 app.get('/crash-test', crashTest); // тест, краш тест по заданию
 
-// предварительные обработчики
+// обработчики мидлвары
 app.use(requestLogger);
 app.use(cookieParser());
 app.use(express.json());
-// server.use(express.urlencoded())
-// server.use(multer().none()); // const formdata = multer();
 app.use(authTempMiddleware); // авторизация
 
 
