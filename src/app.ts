@@ -1,9 +1,7 @@
 import 'dotenv/config';
-import mongoose from 'mongoose';
 import express from 'express';
 import { errors as errorCelebrate } from 'celebrate';
 import cookieParser from 'cookie-parser';
-// import multer from 'multer';
 import userRouter from './routes/userRoute';
 import errorMiddleware from './middlewares/errorMiddleware';
 import authTempMiddleware from './middlewares/authTempMiddleware';
@@ -15,25 +13,8 @@ import { vuIn, vuUp } from './middlewares/validationMiddleware';
 import { crashTest, testTest, mongoTest } from './controllers/testController';
 const cors = require('cors')
 
-// переменные окружения
-const {
-  MONGOO_CONNECT = 'mongodb://localhost:27017/mestodb',
-  SERVER_PORT = 3000,
-} = process.env;
-
-
-
 // подключение к бд
-mongoose.set('strictQuery', false);
-mongoose.connect(MONGOO_CONNECT)
-  .then(() => {
-    console.log('Connection estabislished with MongoDB');
-  })
-  .catch(error => {
-    console.error(MONGOO_CONNECT);
-    console.error(error.message);
-  });
-
+import { SERVER_PORT } from './mongo'
 
 
 // сервер
